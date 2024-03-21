@@ -15,12 +15,18 @@ class Application
 
         static::loadData($persist);
 
-        // todo Run action
+        // Run action
+        $object = $router->getObject();
+        $controllerName = 'Controllers\\' . $router->transformName($object) . 'Controller';
+        if (!class_exists($controllerName)) {
+            $router->respondNotFound();
+        } else {
+            $controller = new $controllerName($config, $router, $persist);
+            // todo Builder?
+            $controller->processRequest();
+        }
 
         static::saveData($persist);
-
-        // todo
-        echo 'Running still v1...';
     }
 
 
