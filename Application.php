@@ -1,6 +1,8 @@
 <?php
 
 use Services\Configuration;
+use Services\Persistence\Persistence;
+use Services\Persistence\SerializablePersistence;
 use Services\Router;
 
 class Application
@@ -11,8 +13,14 @@ class Application
         $router = static::createRouter($config);
         $persist = static::createPersistence($config);
 
+        static::loadData($persist);
+
+        // todo Run action
+
+        static::saveData($persist);
+
         // todo
-        echo 'Running again...';
+        echo 'Running still v1...';
     }
 
 
@@ -31,5 +39,19 @@ class Application
         $className = $config->persistence['class'];
         $connection = $config->persistence['connection'];
         return new $className($connection);
+    }
+
+    protected static function loadData(Persistence $persistence): void
+    {
+        if ($persistence instanceof SerializablePersistence) {
+            $persistence->loadData();
+        }
+    }
+
+    protected static function saveData(Persistence $persistence): void
+    {
+        if ($persistence instanceof SerializablePersistence) {
+            $persistence->saveData();
+        }
     }
 }
