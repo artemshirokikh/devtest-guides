@@ -5,7 +5,7 @@ return array(
     'version' => '0.0.1',
 
     'persistence' => [
-        'class' => '', // todo
+        'class' => 'Services\Persistence\SerializablePersistence',
         'connection' => 'serialized.data',
 
         'guides' => [
